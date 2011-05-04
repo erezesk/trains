@@ -1,0 +1,24 @@
+<table class="profile">
+  <tr>
+    <td class="main">    
+      <h2>
+        <%= h @user.name %>
+      </h2>
+    </td>
+    <td>
+      <h3>
+        <%= @user.email %>
+      <h3>
+    </td>
+  </tr>
+</table>
+<table>
+  <tr align="LEFT">
+    <th width="30%">
+      From Station: <%= @user.origin %>
+    </th>
+    <th>
+      To Station: <%= @user.destination %>
+    </th>
+  </tr>
+</table>
