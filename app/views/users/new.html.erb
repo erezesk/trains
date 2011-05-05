@@ -12,11 +12,11 @@
   </div>
   <div class="field">
     <%= f.label :origin %><br />
-    <%= f.text_field :origin %>
+    <%= f.collection_select(:origin, Station.all, :number, :name) %>
   </div>
   <div class="field">
     <%= f.label :destination %><br />
-    <%= f.text_field :destination %>
+    <%= f.collection_select(:destination, Station.all, :number, :name) %>
   </div>
   <div class="field">
     <%= f.label :password %><br />

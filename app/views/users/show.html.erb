@@ -15,10 +15,10 @@
 <table>
   <tr align="LEFT">
     <th width="50%">
-      From Station: <%= @user.origin %>
+      From Station: <%= Station.find_by_number(@user.origin).name %>
     </th>
     <th>
-      To Station: <%= @user.destination %>
+      To Station: <%= Station.find_by_number(@user.destination).name %>
     </th>
   </tr>
 </table>

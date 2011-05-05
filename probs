@@ -1,2 +1,8 @@
-1. how to run a ruby script?
-2. why heroku shows the index when it doesn't exists?
+why heroku shows the index page when it doesn't exists?
+
+
+  <tr>
+    <td colspan="2">
+      <%= @user.get_schedule %>
+    </td>>
+  </tr>
