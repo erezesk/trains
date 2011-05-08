@@ -12,13 +12,20 @@
     </td>
   </tr>
 </table>
-<table>
-  <tr align="LEFT">
-    <th width="50%">
-      From Station: <%= Station.find_by_number(@user.origin).name %>
+<table class="schedule">
+  <tr>
+    <th colspan="2">
+      From: <%= Station.find_by_number(@user.origin).name %>
     </th>
-    <th>
-      To Station: <%= Station.find_by_number(@user.destination).name %>
+    <th colspan="2">
+      To: <%= Station.find_by_number(@user.destination).name %>
     </th>
   </tr>
+ <tr>
+    <th>Departure</th>
+    <th>Arrival</th>
+    <th>Tarvel Length</th>
+    <th>Is Direct?</th>
+  </tr>
+<%= @schedule %>
 </table>

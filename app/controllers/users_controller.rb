@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @title = @user.name
+    @schedule = @user.get_schedule
   end
 
   def new

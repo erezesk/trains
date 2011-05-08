@@ -49,12 +49,15 @@ class User < ActiveRecord::Base
     #Init params
     origid = self.origin 
     destid = self.destination
+    orig_name = CGI::escape(Station.find_by_number(origid).name)
+    dest_name = CGI::escape(Station.find_by_number(destid).name)
     date = Date.today.to_s
     time = Time.now.to_s.split[3][0,5]
     found_next = "no"
     table_return = ""
+
     #Sets the search Url from rail.co.il
-    url = "http://rail.co.il/HE/DrivePlan/Pages/DrivePlan.aspx?DrivePlanPage=true&OriginStationId=#{origid}&DestStationId=#{destid}&OriginStationName=&DestStationName=&HoursDeparture=all&MinutesDeparture=0&HoursReturn=14&MinutesReturn=0&GoingHourDeparture=true&ArrivalHourDeparture=false&GoingHourReturn=true&ArrivalHourReturn=false&IsReturn=false&GoingTrainCln=#{date}&ReturnningTrainCln=#{date}&IsFullURL=true"
+    url = "http://rail.co.il/HE/DrivePlan/Pages/DrivePlan.aspx?DrivePlanPage=true&OriginStationId=#{origid}&DestStationId=#{destid}&OriginStationName=#{orig_name}&DestStationName=#{dest_name}&HoursDeparture=all&MinutesDeparture=0&HoursReturn=all&MinutesReturn=0&GoingHourDeparture=true&ArrivalHourDeparture=false&GoingHourReturn=true&ArrivalHourReturn=false&IsReturn=false&GoingTrainCln=#{date}&ReturnningTrainCln=#{date}&IsFullURL=true"
     doc = Nokogiri::HTML(open(url))
 
     from = doc.at_css("#ctl00_PlaceHolderMain_ucTicketWizard_OneWaySourceStation .td-DescriptionFont").text
@@ -62,8 +65,6 @@ class User < ActiveRecord::Base
     #init the index
     idx = 0
     #builds a table with all the schedule
-    table_return = "<table border=\"1\"><tr align=\"center\"><th colspan=\"2\">From: #{from}</th><th colspan=\"2\">To: #{to}</th></tr>"
-    table_return = table_return + "<tr align=\"center\"><th>Departure</th><th>Arrival</th><th>Travel length</th><th>Is Direct?</th></tr>"
     while doc.at_css("##{idx} td:nth-child(2)").nil? == false
       departure = doc.at_css("##{idx} td:nth-child(2)").text
       #handle the case when the hour is not in format 00:00
@@ -72,10 +73,10 @@ class User < ActiveRecord::Base
       end  
       #if that's the next train available mark it and stop searching
       if (time <=> departure) == -1 and found_next == "no"
-        table_return = table_return +  "<tr align=\"center\" bgcolor=\"lightgreen\">"
+        table_return = table_return +  "<tr bgcolor=\"#64E986\">"
         found_next = "yes"
       else
-        table_return = table_return +  "<tr align=\"center\">"
+        table_return = table_return +  "<tr>"
       end
       #sets the table columns
       table_return = table_return +  "<td>" + departure + "</td>"
@@ -85,8 +86,7 @@ class User < ActiveRecord::Base
       table_return = table_return +  "</tr>"
       idx = idx + 1
     end
-    table_return = table_return + "</table>"
-    #returns the table for the html page
+    #returns the table for the html page   
     return table_return
   end
 

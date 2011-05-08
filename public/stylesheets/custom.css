@@ -108,6 +108,31 @@ td.main {
   padding: 1em;
 }
 
+table.schedule {
+        width: 80%;
+	border-width: 1px;
+	border-spacing: 2px;
+	border-style: outset;
+	border-color: gray;
+	border-collapse: separate;
+}
+table.schedule th {
+        width: 20%;
+	border-width: 1px;
+	padding: 1px;
+	border-style: inset;
+	border-color: gray;
+	-moz-border-radius: ;
+}
+table.schedule td {
+	border-width: 1px;
+	padding: 1px;
+	border-style: inset;
+	border-color: gray;
+/*	background-color: white;*/
+	-moz-border-radius: ;
+}
+
 /* User signup page */
 div.field, div.actions {
   margin-bottom: 10px;
