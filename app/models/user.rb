@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110504120635
+# Schema version: 20110515111855
 #
 # Table name: users
 #
@@ -12,11 +12,13 @@
 #  updated_at         :datetime
 #  encrypted_password :string(255)
 #  salt               :string(255)
+#  remember_token     :string(255)
 #
 
 class User < ActiveRecord::Base
   attr_accessor :password
-  attr_accessible :name, :email, :origin, :destination, :password, :password_confirmation
+  attr_accessible :name, :email, :origin, :destination, :password, 
+                  :password_confirmation
 
   EmailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
@@ -40,6 +42,11 @@ class User < ActiveRecord::Base
     user = find_by_email(email)
     return nil  if user.nil?
     return user if user.has_password?(submitted_password)
+  end
+
+  def remember_me!
+    self.remember_token = encrypt("#{salt}--#{id}--#{Time.now.utc}")
+    save_without_validation
   end
 
   def get_schedule
@@ -88,12 +95,17 @@ class User < ActiveRecord::Base
     end
     #returns the table for the html page   
     return table_return
+
+    rescue
+      return "<td colspan=\"4\">Cannot load train schedule, try again later</td>"
   end
 
   private
     def encrypt_password
-      self.salt = make_salt
-      self.encrypted_password = encrypt(password)
+      unless password.nil?
+        self.salt = make_salt
+        self.encrypted_password = encrypt(password)
+      end
     end
 
     def encrypt(string)
