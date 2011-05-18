@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
     return table_return
 
     rescue
-      return "<td colspan=\"4\">Cannot load train schedule, try again later</td>"
+      return "<td colspan=\"4\">Cannot load train schedule, try again later, #{url}</td>"
   end
 
   private
